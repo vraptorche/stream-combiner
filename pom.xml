@@ -6,7 +6,11 @@
     <groupId>com.oracle.homework</groupId>
     <artifactId>stream-combiner</artifactId>
     <version>1.0.0-SNAPSHOT</version>
-    <packaging>jar</packaging>
+    <modules>
+        <module>stream-generator</module>
+        <module>stream-combiner-app</module>
+    </modules>
+    <packaging>pom</packaging>
 
     <name>stream-combiner</name>
     <description>Oracle Homework: Stream Combiner</description>
@@ -78,6 +82,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
+        <defaultGoal>clean package</defaultGoal>
     </build>
 
 
