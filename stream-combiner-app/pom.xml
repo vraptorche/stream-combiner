@@ -10,12 +10,29 @@
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>stream-combiber-app</artifactId>
-<dependencies>
-    <dependency>
-        <groupId>com.oracle.homework</groupId>
-        <artifactId>stream-combiner-core</artifactId>
-        <version>${project.parent.version}</version>
-    </dependency>
-</dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>com.oracle.homework</groupId>
+            <artifactId>stream-combiner-core</artifactId>
+            <version>${project.parent.version}</version>
+        </dependency>
 
+        <dependency>
+            <groupId>com.oracle.homework</groupId>
+            <artifactId>stream-generator</artifactId>
+            <version>${project.parent.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <skip>false</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

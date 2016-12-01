@@ -30,7 +30,6 @@ public class DefaultDataGenerator implements DataGenerator {
                 .sorted(Comparator.comparing(Data::timestamp))
                 .map(dataAdapter::marshal)
                 .map(this::toXml).collect(joining("\n"));
-        System.out.println(chunk);
         return chunk;
     }
 
@@ -51,7 +50,7 @@ public class DefaultDataGenerator implements DataGenerator {
             StringWriter writer = new StringWriter();
             marshaller.marshal(data, writer);
             String result = writer.toString();
-            result = result.replace("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>", "");
+            result = result.replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "");
             return result;
         } catch (JAXBException e) {
             throw new RuntimeException(e);
