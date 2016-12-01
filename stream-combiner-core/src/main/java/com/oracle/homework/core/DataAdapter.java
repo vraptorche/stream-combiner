@@ -13,7 +13,7 @@ public class DataAdapter extends XmlAdapter<AdaptedData, Data> {
     }
 
     @Override
-    public AdaptedData marshal(Data v) throws Exception {
+    public AdaptedData marshal(Data v) {
         return new AdaptedData(v.timestamp(), v.amount());
     }
 }

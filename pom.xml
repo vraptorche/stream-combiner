@@ -9,6 +9,7 @@
     <modules>
         <module>stream-generator</module>
         <module>stream-combiner-app</module>
+        <module>stream-combiner-core</module>
     </modules>
     <packaging>pom</packaging>
 
@@ -76,10 +77,21 @@
     </dependencies>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-maven-plugin</artifactId>
+                </plugin>
+            </plugins>
+        </pluginManagement>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <skip>true</skip>
+                </configuration>
             </plugin>
         </plugins>
         <defaultGoal>clean package</defaultGoal>

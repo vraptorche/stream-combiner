@@ -1,28 +1,29 @@
 package com.oracle.homework.core.domain;
 
 import javax.xml.bind.annotation.*;
+import java.math.BigDecimal;
 
-//@XmlRootElement
+@XmlRootElement(name = "data")
 //@XmlAccessorType(XmlAccessType.FIELD)
 public class AdaptedData {
 
-    private Double amount;
+    private BigDecimal amount;
     private Long timestamp;
 
     public AdaptedData() {
     }
 
-    public AdaptedData(long timestamp, double amount) {
+    public AdaptedData(long timestamp, BigDecimal amount) {
         this.timestamp = timestamp;
         this.amount = amount;
     }
 
     @XmlElement
-    public Double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(Double amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 

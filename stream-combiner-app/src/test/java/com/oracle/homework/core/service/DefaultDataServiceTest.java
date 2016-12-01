@@ -5,6 +5,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 
+import java.math.BigDecimal;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 
@@ -22,12 +24,12 @@ public class DefaultDataServiceTest {
         Data data = service.fromXml("<data><timestamp>123456789</timestamp><amount>1234.567890</amount></data>");
         assertThat(data).isNotNull();
         assertThat(data.timestamp()).isEqualTo(123456789);
-        assertThat(data.amount()).isEqualTo(1234.567890);
+        assertThat(data.amount()).isEqualTo(new BigDecimal("1234.567890"));
     }
 
     @Test
     public void toJson() throws Exception {
-        Data data = Data.of(123456789L, 1234.567890);
+        Data data = Data.of(123456789L, new BigDecimal(1234.567890));
         String json = service.toJson(data);
         String expected = "{ \"data\": { \"timestamp\":123456789, \"amount\":1234.56789 }}";
         JSONAssert.assertEquals(json,expected,false);

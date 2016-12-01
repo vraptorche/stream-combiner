@@ -9,13 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>stream-generator</artifactId>
+    <artifactId>stream-combiner-core</artifactId>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.oracle.homework</groupId>
-            <artifactId>stream-combiner-core</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
-    </dependencies>
+
 </project>

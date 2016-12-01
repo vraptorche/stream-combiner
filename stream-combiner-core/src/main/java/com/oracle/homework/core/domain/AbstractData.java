@@ -5,6 +5,7 @@ import org.immutables.value.Value;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.math.BigDecimal;
 
 @Value.Immutable
 @XmlRootElement(name = "data")
@@ -14,5 +15,5 @@ public interface AbstractData {
     Long timestamp();
 
     @Value.Parameter
-    Double amount();
+    BigDecimal amount();
 }
