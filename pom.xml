@@ -10,6 +10,7 @@
         <module>stream-generator</module>
         <module>stream-combiner-app</module>
         <module>stream-combiner-core</module>
+        <module>stream-generator-app</module>
     </modules>
     <packaging>pom</packaging>
 
