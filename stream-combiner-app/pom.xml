@@ -11,17 +11,16 @@
 
     <artifactId>stream-combiber-app</artifactId>
     <dependencies>
-        <dependency>
-            <groupId>com.oracle.homework</groupId>
-            <artifactId>stream-combiner-core</artifactId>
-            <version>${project.parent.version}</version>
-        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>com.oracle.homework</groupId>-->
+            <!--<artifactId>stream-combiner-core</artifactId>-->
+            <!--<version>${project.parent.version}</version>-->
+        <!--</dependency>-->
 
         <dependency>
             <groupId>com.oracle.homework</groupId>
             <artifactId>stream-generator</artifactId>
             <version>${project.parent.version}</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
     <build>

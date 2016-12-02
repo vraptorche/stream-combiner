@@ -1,0 +1,11 @@
+stream-generator:
+  hosts:
+    alfa:
+      host: localhost
+      port: 2222
+    beta:
+      host: localhost
+      port: 3333
+    gamma:
+      host: localhost
+      port: 4444
