@@ -50,7 +50,7 @@ public class DefaultDataGenerator implements DataGenerator {
             StringWriter writer = new StringWriter();
             marshaller.marshal(data, writer);
             String result = writer.toString();
-            result = result.replace("<?xml version=\"1.0\" encoding=\"UTF-8\"?>", "");
+            result = result.replace("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>", "");
             return result;
         } catch (JAXBException e) {
             throw new RuntimeException(e);
