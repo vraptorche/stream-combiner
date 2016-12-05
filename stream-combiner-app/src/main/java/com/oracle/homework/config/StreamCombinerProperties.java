@@ -4,8 +4,8 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 
 import java.util.Map;
 
-@ConfigurationProperties(prefix = "stream-generator")
-public class GeneratorProperties {
+@ConfigurationProperties(prefix = "stream-combiner")
+public class StreamCombinerProperties {
 
     Map<String, HostAddress> hosts;
 

@@ -1,7 +1,7 @@
 package com.oracle.homework.service;
 
 import com.oracle.homework.DataGenerator;
-import com.oracle.homework.StreamCombinerConfig;
+import com.oracle.homework.config.StreamCombinerConfig;
 import com.oracle.homework.TestConfig;
 import com.oracle.homework.core.domain.Data;
 import com.oracle.homework.core.service.DataService;

@@ -1,6 +1,6 @@
 package com.oracle.homework;
 
-import com.oracle.homework.config.GeneratorAddress;
+import com.oracle.homework.config.HostAddress;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
@@ -16,7 +16,7 @@ import java.util.Optional;
 
 public class DataGeneratorVerticle extends AbstractVerticle {
 
-    private Map<String, GeneratorAddress> addresses;
+    private Map<String, HostAddress> addresses;
     @Autowired
     private DataGenerator dataGenerator;
 
@@ -24,13 +24,15 @@ public class DataGeneratorVerticle extends AbstractVerticle {
     public void start() throws Exception {
         Optional.ofNullable(this.addresses)
                 .map(m -> m)
-                .orElseThrow(RuntimeException::new).forEach((k, v) -> {
-            createserver(v);
-        });
+                .orElseThrow(RuntimeException::new)
+                .forEach((k, v) -> {
+                    createserver(v);
+                });
     }
 
-    private void createserver(GeneratorAddress v) {
+    private void createserver(HostAddress v) {
         NetServerOptions options = new NetServerOptions()
+                .setLogActivity(true)
                 .setPort(v.getPort())
                 .setHost(v.getHost());
         NetServer server = vertx.createNetServer(options).connectHandler(socket -> {
@@ -39,17 +41,19 @@ public class DataGeneratorVerticle extends AbstractVerticle {
             @Override
             public void handle(NetSocket netSocket) {
                 netSocket.handler(buffer -> {
-                    String dataChunk = dataGenerator.generateDataChunk(new Date().getTime(), 100);
-                    Buffer outBuffer = Buffer.buffer();
-                    outBuffer.appendString(dataChunk);
-                    netSocket.write(outBuffer);
+                    vertx.setPeriodic(750, event -> {
+                        String dataChunk = dataGenerator.generateDataChunk(new Date().getTime(), 100);
+                        Buffer outBuffer = Buffer.buffer();
+                        outBuffer.appendString(dataChunk);
+                        netSocket.write(outBuffer);
+                    });
                 });
             }
         });
         server.listen();
     }
 
-    public void setAddresses(Map<String, GeneratorAddress> addresses) {
+    public void setAddresses(Map<String, HostAddress> addresses) {
         this.addresses = addresses;
     }
 

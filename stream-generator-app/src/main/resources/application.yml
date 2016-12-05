@@ -1,3 +1,4 @@
+
 stream-generator:
   hosts:
     alfa:
@@ -9,3 +10,8 @@ stream-generator:
     gamma:
       host: localhost
       port: 4444
+
+  max-items:  500
+
+server:
+  port: 9191
