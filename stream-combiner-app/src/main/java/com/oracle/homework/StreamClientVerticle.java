@@ -2,33 +2,53 @@ package com.oracle.homework;
 
 
 import com.oracle.homework.config.HostAddress;
+import com.oracle.homework.core.service.DataService;
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
+import io.reactivex.subjects.Subject;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.net.NetClient;
 import io.vertx.core.net.NetClientOptions;
 import io.vertx.core.net.NetSocket;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import static java.util.Optional.ofNullable;
+import static java.util.stream.Collectors.toList;
+
 public class StreamClientVerticle extends AbstractVerticle {
+
+    @Autowired
+    private DataService dataService;
 
     private Map<String, HostAddress> addresses;
 
+    private Observable<Object> combinerObservable = Observable.empty();
 
     @Override
     public void start() throws Exception {
-        Optional.ofNullable(addresses)
-                .map(m -> m)
-                .orElseThrow(RuntimeException::new)
-                .forEach((k, v) -> createClient(v));
+        List<Subject<String>> subjects = ofNullable(addresses)
+                .map(m -> m.entrySet().stream()
+                        .map(Map.Entry::getValue)
+                        .map(this::createClient)
+                        .collect(toList()))
+                .orElseThrow(RuntimeException::new);
+        PublishSubject.mergeDelayError(subjects)
+                .map(c -> c.split("\n"))
+                .map(Observable::fromArray)
+                .flatMap(s -> s)
+//                .doOnNext(s -> System.out.println("***" + s))
+//                .map(dataService::fromXml)
+                .subscribe(System.out::println, Throwable::printStackTrace);
     }
 
-    private void createClient(HostAddress address) {
+    private Subject<String> createClient(HostAddress address) {
         NetClientOptions options = new NetClientOptions()
                 .setLogActivity(true);
-        PublishSubject<Object> subject = PublishSubject.create();
+        PublishSubject<String> subject = PublishSubject.create();
         NetClient client = vertx.createNetClient(options);
         client.connect(address.getPort(), address.getHost(), res -> {
             if (res.succeeded()) {
@@ -44,8 +64,8 @@ public class StreamClientVerticle extends AbstractVerticle {
                 socket.exceptionHandler(subject::onError);
                 socket.write("\n");
             }
-            subject.subscribe(System.out::println);
         });
+        return subject;
     }
 
     public void setAddresses(Map<String, HostAddress> addresses) {

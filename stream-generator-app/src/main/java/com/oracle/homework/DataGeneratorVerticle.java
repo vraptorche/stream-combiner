@@ -42,10 +42,15 @@ public class DataGeneratorVerticle extends AbstractVerticle {
             public void handle(NetSocket netSocket) {
                 netSocket.handler(buffer -> {
                     vertx.setPeriodic(750, event -> {
-                        String dataChunk = dataGenerator.generateDataChunk(new Date().getTime(), 100);
-                        Buffer outBuffer = Buffer.buffer();
-                        outBuffer.appendString(dataChunk);
-                        netSocket.write(outBuffer);
+                        String dataChunk = dataGenerator.generateDataChunk(new Date().getTime(), 8);
+                        buffer.appendString(dataChunk);
+//                        Buffer outBuffer = Buffer.buffer();
+//                        outBuffer.appendString(dataChunk);
+                        netSocket.write(buffer);
+                        if (netSocket.writeQueueFull()) {
+                            netSocket.pause();
+                            netSocket.drainHandler(done -> netSocket.resume());
+                        }
                     });
                 });
             }

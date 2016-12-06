@@ -23,7 +23,8 @@ public class DefaultDataService implements DataService {
         JAXBContext context = JAXBContext.newInstance(Data.class, AdaptedData.class);
         Unmarshaller unmarshaller = context.createUnmarshaller();
         AdaptedData data = unmarshaller.unmarshal(new StreamSource(new StringReader(payload)), AdaptedData.class).getValue();
-        return dataAdapter.unmarshal(data);
+        Data result = dataAdapter.unmarshal(data);
+        return result;
     }
 
     @Override
