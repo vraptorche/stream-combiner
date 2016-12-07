@@ -1,5 +1,6 @@
 package com.oracle.homework;
 
+import com.oracle.homework.config.GeneratorProperties;
 import com.oracle.homework.config.HostAddress;
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Handler;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import java.util.Date;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Random;
 
 
 public class DataGeneratorVerticle extends AbstractVerticle {
@@ -19,6 +21,9 @@ public class DataGeneratorVerticle extends AbstractVerticle {
     private Map<String, HostAddress> addresses;
     @Autowired
     private DataGenerator dataGenerator;
+    @Autowired
+    GeneratorProperties properties;
+    private final Random random = new Random();
 
     @Override
     public void start() throws Exception {
@@ -37,24 +42,18 @@ public class DataGeneratorVerticle extends AbstractVerticle {
                 .setHost(v.getHost());
         NetServer server = vertx.createNetServer(options).connectHandler(socket -> {
         });
-        server.connectHandler(new Handler<NetSocket>() {
-            @Override
-            public void handle(NetSocket netSocket) {
-                netSocket.handler(buffer -> {
-                    vertx.setPeriodic(750, event -> {
-                        String dataChunk = dataGenerator.generateDataChunk(new Date().getTime(), 8);
-                        buffer.appendString(dataChunk);
-//                        Buffer outBuffer = Buffer.buffer();
-//                        outBuffer.appendString(dataChunk);
-                        netSocket.write(buffer);
-                        if (netSocket.writeQueueFull()) {
-                            netSocket.pause();
-                            netSocket.drainHandler(done -> netSocket.resume());
-                        }
-                    });
-                });
-            }
-        });
+        server.connectHandler(netSocket -> netSocket.handler(buffer -> {
+            vertx.setPeriodic(750, event -> {
+                String dataChunk = dataGenerator.generateDataChunk(new Date().getTime(), random.nextInt(properties.getMaxItems()));
+                buffer.appendString(dataChunk);
+                buffer.appendString("\n");
+                netSocket.write(buffer);
+                if (netSocket.writeQueueFull()) {
+                    netSocket.pause();
+                    netSocket.drainHandler(done -> netSocket.resume());
+                }
+            });
+        }));
         server.listen();
     }
 
